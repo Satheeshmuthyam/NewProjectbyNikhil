@@ -5,14 +5,15 @@ import axios from 'axios';
 
 // refactor the code to use useRef instaed of useState for the user object
 // change the input fields to use the ref object to get the value of the input fields
-
+//changes by sony
 
 function RegistrationAPIintegration() {
 
-   const nameRef = useRef(null);
+    const nameRef = useRef(null);
     const emailRef = useRef(null);
     const phoneRef = useRef(null);
     const passwordRef = useRef(null);
+    const password = useRef(null);
 
 
     const [errors, setErrors] = useState({
@@ -27,8 +28,8 @@ function RegistrationAPIintegration() {
         // update the user state with prevState
         // validate the input fields
         validateFields(name, value);
-       
-    }   
+
+    }
 
     const validateFields = (name, value) => {
         let errorMessage = '';
@@ -39,24 +40,24 @@ function RegistrationAPIintegration() {
                 break;
             case 'email':
                 errorMessage = value.trim() ?
-                /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Invalid email format.' :
-                'Email is required';
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Invalid email format.' :
+                    'Email is required';
                 break;
             case 'phone':
                 errorMessage = value.trim() ?
-                /^\d{10}$/.test(value) ? '' : 'Phone number must be a valid Indian phone number (10 digits).' :
-                'Phone is required';
+                    /^\d{10}$/.test(value) ? '' : 'Phone number must be a valid Indian phone number (10 digits).' :
+                    'Phone is required';
                 break;
             case 'password':
                 errorMessage = value.trim() ?
-                /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}/.test(value) ? '' : 'Password must be at least 8 characters long and include at least one number, one uppercase letter, and one special character.' :
-                'Password is required';
+                    /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}/.test(value) ? '' : 'Password must be at least 8 characters long and include at least one number, one uppercase letter, and one special character.' :
+                    'Password is required';
                 break;
             default:
                 break;
         }
 
-        setErrors((prevState) => ({ 
+        setErrors((prevState) => ({
             ...prevState,
             [name]: errorMessage
         }));
@@ -71,7 +72,7 @@ function RegistrationAPIintegration() {
             password: passwordRef.current.value
         };
 
-       
+
         Object.keys(newUser).forEach((key) => {
             validateFields(key, newUser[key]);
         });
@@ -86,7 +87,7 @@ function RegistrationAPIintegration() {
             .catch((error) => {
                 console.log(error);
             });
-        
+
 
     };
     const handleClick = (event) => {
@@ -105,10 +106,10 @@ function RegistrationAPIintegration() {
             .catch((error) => {
                 console.log(error);
             })
-        };
-       
+    };
 
-    
+
+
     const handleClickforUpdate = (event) => {
         event.preventDefault();
         const updatedUser = {
@@ -117,7 +118,7 @@ function RegistrationAPIintegration() {
             phone: phoneRef.current.value,
             password: passwordRef.current.value
         };
-    
+
         // Call the updateUser function with the correct arguments
         axios.put(`http://localhost:8080/users/${updatedUser.name}`, updatedUser)
             .then((response) => {
@@ -127,9 +128,9 @@ function RegistrationAPIintegration() {
                 console.error(error);
             });
     };
-       
+
     return (
-        <form className={styles.loginForm} onSubmit={handleSubmit}> 
+        <form className={styles.loginForm} onSubmit={handleSubmit}>
             <div className={styles.inputGroup}>
                 <label htmlFor="name" className={styles.label}>Name:</label>
                 <input
@@ -161,7 +162,7 @@ function RegistrationAPIintegration() {
                     id="phone"
                     name="phone"
                     className={styles.input}
-                  
+
                     onChange={handleChange}
                     ref={phoneRef}
                 />
@@ -174,12 +175,12 @@ function RegistrationAPIintegration() {
                     id="password"
                     name="password"
                     className={styles.input}
-                   
+
                     onChange={handleChange}
                     ref={passwordRef}
                 />
             </div>
-                {errors.password && <p className={styles.error}>{errors.password}</p>}
+            {errors.password && <p className={styles.error}>{errors.password}</p>}
             <button type="submit" className={styles.submitButton} >Register</button>
             <button type="submit" className={styles.submitButton} onClick={handleClick}>Delete</button>
             <button type="submit" className={styles.submitButton} onClick={handleClickforUpdate}>update</button>
